@@ -2,14 +2,23 @@
 import { onMounted, ref } from "vue";
 
 let tampung_faktur = ref([]);
+let cariDataIni = ref([]);
 
 onMounted(async () => {
-    getDataFaktur();
+    tampilDataFaktur();
 });
 
-const getDataFaktur = async () => {
-    let response = await axios.get("/api/get-data-faktur");
-    tampung_faktur.value = response.data.faktur;
+const tampilDataFaktur = async () => {
+    let respon = await axios.get("/api/tampil-data-faktur");
+    tampung_faktur.value = respon.data.faktur;
+};
+
+const cariDataFaktur = async () => {
+    let respon = await axios.get(
+        "/api/cari-data-faktur?cari=" + cariDataIni.value
+    );
+    console.log("response", respon);
+    tampung_faktur.value = respon.data.faktur;
 };
 </script>
 
@@ -59,6 +68,8 @@ const getDataFaktur = async () => {
                             class="table--search--input"
                             type="text"
                             placeholder="Search invoice"
+                            v-model="cariDataIni"
+                            @keyup="cariDataFaktur()"
                         />
                     </div>
                 </div>

@@ -19,4 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/get-data-faktur', [FakturController::class, 'get_data_faktur']);
+Route::get('/tampil-data-faktur', [FakturController::class, 'tampil_data_faktur']);
+Route::get('/cari-data-faktur', [FakturController::class, 'cari_data_faktur']);
