@@ -10,4 +10,9 @@ class Faktur extends Model
     use HasFactory;
     protected $table = 'faktur';
     protected $guarded = ['id'];
+
+    public function relasi_pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class, "pelanggan_id", 'id');
+    }
 }
