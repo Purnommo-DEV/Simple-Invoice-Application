@@ -1,5 +1,8 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 let tampung_faktur = ref([]);
 let cariDataIni = ref([]);
@@ -17,8 +20,16 @@ const cariDataFaktur = async () => {
     let respon = await axios.get(
         "/api/cari-data-faktur?cari=" + cariDataIni.value
     );
-    console.log("response", respon);
     tampung_faktur.value = respon.data.faktur;
+};
+
+const fakturBaru = async () => {
+    let form = await axios.get("/api/baru-data-faktur");
+    router.push("/faktur/baru");
+};
+
+const tampilDetailFaktur = (id) => {
+    router.push("/faktur/detail/" + id);
 };
 </script>
 
@@ -31,7 +42,9 @@ const cariDataFaktur = async () => {
                     <h2 class="invoice__title">Invoices</h2>
                 </div>
                 <div>
-                    <a class="btn btn-secondary"> New Invoice </a>
+                    <a class="btn btn-secondary" @click="fakturBaru">
+                        New Invoice
+                    </a>
                 </div>
             </div>
 
@@ -90,9 +103,9 @@ const cariDataFaktur = async () => {
                     :key="item.id"
                     v-if="tampung_faktur.length > 0"
                 >
-                    <a href="#" class="table--items--transactionId"
-                        >#{{ item.id }}</a
-                    >
+                    <a href="#" @click="tampilDetailFaktur(item.id)"
+                        >#{{ item.id }}
+                    </a>
                     <p>{{ item.tanggal }}</p>
                     <p>{{ item.nomor }}</p>
                     <p v-if="item.relasi_pelanggan">
